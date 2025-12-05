@@ -1,0 +1,16 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "dependencies": {
+        "bunx": "^0.1.0",
+      },
+    },
+  },
+  "packages": {
+    "bun-utilities": ["bun-utilities@0.2.1", "", {}, "sha512-2e4rMaA50zfUqvc3+Cu8I88nCzvF6WsOnxz4iZSSSQt/pBGgpiwgFCx2y5/s69C9iaCVfyrM6kHxYOgvVx1e8Q=="],
+
+    "bunx": ["bunx@0.1.0", "", { "dependencies": { "bun-utilities": "^0.2.0" } }, "sha512-RKz/xk5NJ/oPlnafM9qjujUumy8I/yZL2w+LNu/JCJFty2WbeLhLlqWNnR7kEQFFYVxyZZGHT5c5U288fDM1Sg=="],
+  }
+}
