@@ -1,3 +1,9 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+.input-ldap {
+    @apply w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40
+           focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/30
+           transition-all duration-500 hover:bg-white/20;
+  }

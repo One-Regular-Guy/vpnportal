@@ -1,0 +1,15 @@
+[package]
+name = "hades"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+poem = '3.1.12'
+tokio = { version = "1.48.0", features = ["full"] }
+serde = { version = "1.0.228", features = [] }
+uuid = { version = "1.19.0", features = ["v7"] }
+bcrypt = "0.17.1"
+poem-openapi = { version = "5", features = ["swagger-ui"] }
+pasetors = "0.7.7"
+tracing = "0.1.43"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter", "fmt"] }
