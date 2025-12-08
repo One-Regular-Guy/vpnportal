@@ -1,12 +1,14 @@
 use pasetors::{claims::Claims, keys::AsymmetricKeyPair, public, version4::V4};
+use sqlx::PgPool;
 use tracing::{debug, info};
 
 
-use crate::models::user_entity::{Login, User};
+use crate::{models::{user_entity::{self, Login, Register, User}, user_repository::Repository}, services::user_repository::{self, UserSqlxPGRepository}};
 
-pub fn execute_login(login: Login, kp: AsymmetricKeyPair::<V4>) -> (bool, String){
-    let creds_valid: User = User::new("", "kelvin", "email@gmail.com", "olha a senha");
-    debug!("Login: Retrieving User Fake");
+pub async fn execute_login(login: Login, kp: AsymmetricKeyPair::<V4>, pool: &PgPool) -> (bool, String){
+    let repo = user_repository::UserSqlxPGRepository::new();
+    let creds_valid: User = repo.get_user_by_email(pool, login.email.clone()).await.unwrap();
+    debug!("Login: Retrieving User");
     // Generate the keys and sign the claims.
     // Decide how we want to validate the claims after verifying the token itself.
     // The default verifies the `nbf`, `iat` and `exp` claims. `nbf` and `iat` are always
@@ -37,4 +39,10 @@ pub fn execute_login(login: Login, kp: AsymmetricKeyPair::<V4>) -> (bool, String
         (false, "".to_string())
 
     }
+}
+pub async fn execute_register(register: Register, pool: &PgPool) -> bool{
+    let repo: UserSqlxPGRepository = user_repository::UserSqlxPGRepository::new();
+    let user: User = User::new_from_register(register);
+    repo.create_user(pool, user).await.unwrap();
+    true
 }

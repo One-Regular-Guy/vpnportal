@@ -2,17 +2,25 @@
 
 use poem_openapi::Object;
 use uuid::Timestamp;
+use sqlx::FromRow;
 
-#[derive(Debug, Clone)]
+#[derive(FromRow, Debug, Clone)]
 pub struct User {
-    id: uuid::Uuid,
-    name: String,
-    email: String,
-    password: String
+    pub id: uuid::Uuid,
+    pub name: String,
+    pub email: String,
+    pub password: String
 }
 
 #[derive(Debug, Clone, serde::Deserialize, Object)]
 pub struct Login {
+    pub email: String,
+    pub password: String,
+}
+
+#[derive(Debug, Clone, serde::Deserialize, Object)]
+pub struct Register {
+    pub name: String,
     pub email: String,
     pub password: String,
 }
@@ -24,6 +32,13 @@ impl User {
         let password: String = bcrypt::hash(password.into(),8).unwrap();
         let email: String = email.into();
         let name: String = name.into();
+        Self { id, name, email, password }
+    }
+    pub fn new_from_register(register: Register) -> Self {
+        let id: uuid::Uuid = uuid::Uuid::new_v7(Timestamp::now(uuid::timestamp::context::ContextV7::new()));
+        let password: String = bcrypt::hash(register.password,8).unwrap();
+        let email: String = register.email;
+        let name: String = register.name;
         Self { id, name, email, password }
     }
     pub fn id(&self) -> uuid::Uuid {

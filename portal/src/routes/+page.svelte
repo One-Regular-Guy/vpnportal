@@ -2,19 +2,13 @@
   import { onMount } from 'svelte';
   import { fly, fade, scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
+	import { enhance } from '$app/forms';
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
   let email = $state('');
   let password = $state('');
   let isLoading = $state(false);
-
-  async function handleLogin(e: Event) {
-    e.preventDefault();
-    isLoading = true;
-    // Simula login
-    await new Promise(r => setTimeout(r, 2000));
-    isLoading = false;
-  }
-
   onMount(() => {
     document.body.classList.add('overflow-hidden');
     return () => document.body.classList.remove('overflow-hidden');
@@ -72,18 +66,29 @@
         </p>
 
         <!-- Formulário -->
-        <form on:submit={handleLogin} class="space-y-6">
+        <form method="POST" class="space-y-6" use:enhance={() => {
+            isLoading = true;
+            return async ({ result }) => {
+              isLoading = false;
+              if (result.type === 'success' && result.data?.success) {
+                goto('/users');
+              }
+            };
+          }}>
           <div in:scale={{ delay: 1400, duration: 600, start: 0.9 }}>
             <label class="block text-sm font-medium text-white/80 mb-2">Email</label>
             <input
               type="email"
               bind:value={email}
+              id="email"
+              name="email"
               required
               placeholder="seu@email.com"
               class="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40
                      focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/30
                      transition-all duration-500 hover:bg-white/20"
             />
+            
           </div>
 
           <div in:scale={{ delay: 1600, duration: 600, start: 0.9 }}>
@@ -91,6 +96,8 @@
             <input
               type="password"
               bind:value={password}
+              id="password"
+              name="password"
               required
               placeholder="••••••••"
               class="w-full px-5 py-4 bg-white/10 border border border-white/20 rounded-xl text-white placeholder-white/40

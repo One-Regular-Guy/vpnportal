@@ -13,3 +13,5 @@ poem-openapi = { version = "5", features = ["swagger-ui"] }
 pasetors = "0.7.7"
 tracing = "0.1.43"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter", "fmt"] }
+sqlx = { version = "0.8.6", features = ["postgres","runtime-tokio","uuid"] }
+async-trait = "0.1.89"

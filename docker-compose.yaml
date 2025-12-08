@@ -1,0 +1,56 @@
+services:
+  dragonfly:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+    restart: always
+    ulimits:
+      memlock: -1
+    command: ["--requirepass", "a_very_hard_password"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - dragonfly_data:/data
+    networks:
+      - backend
+  postgres:
+    image: postgres:latest
+    hostname: bd
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hades
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d dbname"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8081:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  dragonfly_data:
+networks:
+  backend:
