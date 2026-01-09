@@ -45,4 +45,13 @@ impl Repository for UserSqlxPGRepository {
     .await?;
     Ok(())
     }
+
+    async fn delete_user_by_name(&self, pool: &PgPool, user_name: String) -> Result<(), sqlx::Error> {
+        let _rows_affected = sqlx::query!(r#"DELETE FROM "users" WHERE name = $1"#,
+            user_name,
+        )
+        .execute(pool)
+        .await?;
+        Ok(())
+    }
 }

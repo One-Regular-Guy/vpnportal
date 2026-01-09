@@ -5,9 +5,12 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 
+  let name = $state('');
   let email = $state('');
   let password = $state('');
+  let confirmPassword = $state('');
   let isLoading = $state(false);
+
   onMount(() => {
     document.body.classList.add('overflow-hidden');
     return () => document.body.classList.remove('overflow-hidden');
@@ -15,7 +18,7 @@
 </script>
 
 <svelte:head>
-  <title>Bem-vindo • Login</title>
+  <title>Cadastre-se • Registro</title>
 </svelte:head>
 
 <!-- Fundo animado com gradiente + partículas -->
@@ -48,7 +51,7 @@
         <!-- Título com animação escalonada -->
         <div in:fade={{ delay: 300, duration: 800 }}>
           <h1 class="text-5xl font-bold text-white text-center mb-2 tracking-tight">
-            {#each "Bem-vindo" .split('') as char, i}
+            {#each "Cadastre-se" .split('') as char, i}
               <span
                 in:fly={{ y: 50, delay: 500 + i * 100, duration: 800, easing: quintOut }}
                 class="inline-block hover:text-cyan-300 transition-colors duration-300"
@@ -60,10 +63,10 @@
         </div>
 
         <p in:fade={{ delay: 1200, duration: 1000 }} class="text-center text-white/70 mb-10">
-          Entre com sua conta
+          Crie sua conta gratuitamente
         </p>
 
-        <!-- Formulário -->
+        <!-- Formulário de registro -->
         <form method="POST" class="space-y-6" use:enhance={() => {
             isLoading = true;
             return async ({ result }) => {
@@ -73,7 +76,24 @@
               }
             };
           }}>
+          <!-- Nome -->
           <div in:scale={{ delay: 1400, duration: 600, start: 0.9 }}>
+            <label for="name" class="block text-sm font-medium text-white/80 mb-2">Nome completo</label>
+            <input
+              type="text"
+              bind:value={name}
+              id="name"
+              name="name"
+              required
+              placeholder="João Silva"
+              class="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40
+                     focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/30
+                     transition-all duration-500 hover:bg-white/20"
+            />
+          </div>
+
+          <!-- Email -->
+          <div in:scale={{ delay: 1600, duration: 600, start: 0.9 }}>
             <label for="email" class="block text-sm font-medium text-white/80 mb-2">Email</label>
             <input
               type="email"
@@ -86,10 +106,10 @@
                      focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/30
                      transition-all duration-500 hover:bg-white/20"
             />
-            
           </div>
 
-          <div in:scale={{ delay: 1600, duration: 600, start: 0.9 }}>
+          <!-- Senha -->
+          <div in:scale={{ delay: 1800, duration: 600, start: 0.9 }}>
             <label for="password" class="block text-sm font-medium text-white/80 mb-2">Senha</label>
             <input
               type="password"
@@ -98,7 +118,23 @@
               name="password"
               required
               placeholder="••••••••"
-              class="w-full px-5 py-4 bg-white/10 border border border-white/20 rounded-xl text-white placeholder-white/40
+              class="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40
+                     focus:outline-none focus:border-purple-400 focus:ring-4 focus:ring-purple-400/30
+                     transition-all duration-500 hover:bg-white/20"
+            />
+          </div>
+
+          <!-- Confirmar senha -->
+          <div in:scale={{ delay: 2000, duration: 600, start: 0.9 }}>
+            <label for="confirmPassword" class="block text-sm font-medium text-white/80 mb-2">Confirmar senha</label>
+            <input
+              type="password"
+              bind:value={confirmPassword}
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+              placeholder="••••••••"
+              class="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40
                      focus:outline-none focus:border-purple-400 focus:ring-4 focus:ring-purple-400/30
                      transition-all duration-500 hover:bg-white/20"
             />
@@ -119,9 +155,9 @@
                   <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.3"/>
                   <path fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
                 </svg>
-                Entrando...
+                Criando conta...
               {:else}
-                Entrar
+                Criar conta
                 <span class="inline-block transition-transform group-hover:translate-x-2">→</span>
               {/if}
             </span>
@@ -133,8 +169,8 @@
           </button>
         </form>
 
-        <p in:fade={{ delay: 2000 }} class="text-center text-white/50 text-sm mt-8">
-          Não tem conta? <a href="/" class="text-cyan-300 hover:underline">Cadastre-se</a>
+        <p in:fade={{ delay: 2400 }} class="text-center text-white/50 text-sm mt-8">
+          Já tem conta? <a href="/login" class="text-cyan-300 hover:underline">Entre aqui</a>
         </p>
       </div>
     </div>
@@ -149,9 +185,7 @@
 
   .animate-linear-xy {
     background-size: 400% 400%;
-    animation :global(&) {
-      animation: linear-xy 15s ease infinite;
-    }
+    animation: linear-xy 15s ease infinite;
   }
 
   .delay-700 {
@@ -173,6 +207,6 @@
   }
 
   .animate-border-glow {
-    animation: border-glow 8s ease-infinite;
+    animation: border-glow 8s ease-in-out infinite;
   }
 </style>
