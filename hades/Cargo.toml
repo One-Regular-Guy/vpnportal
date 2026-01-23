@@ -5,13 +5,17 @@ edition = "2024"
 
 [dependencies]
 poem = '3.1.12'
-tokio = { version = "1.48.0", features = ["full"] }
+tokio = { version = "1.49.0", features = ["full"] }
 serde = { version = "1.0.228", features = [] }
-uuid = { version = "1.19.0", features = ["v7"] }
-bcrypt = "0.17.1"
+uuid = { version = "1.19.0", features = ["v7","fast-rng"] }
+bcrypt = "0.18.0"
 poem-openapi = { version = "5", features = ["swagger-ui"] }
 pasetors = "0.7.7"
-tracing = "0.1.43"
+tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter", "fmt"] }
 sqlx = { version = "0.8.6", features = ["postgres","runtime-tokio","uuid"] }
 async-trait = "0.1.89"
+thiserror = "2.0.18"
+openssl = { version = "0.10", features = [] }
+anyhow = "1.0" 
+pem = "3.0.6"

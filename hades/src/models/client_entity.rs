@@ -1,7 +1,6 @@
 
 
 use poem_openapi::Object;
-use uuid::Timestamp;
 use sqlx::FromRow;
 
 #[derive(FromRow, Debug, Clone)]
@@ -14,6 +13,9 @@ pub struct Client {
     pub sn: String,
     pub mail: String,
     pub password: String,
+    pub actual_download_id: Option<String>,
+    pub certificate: Option<String>,
+    pub totp_secret: Option<String>,
     pub is_ldap: bool,
     pub is_active: bool,
 }
@@ -46,10 +48,13 @@ impl Client {
         let cn: String = cn.into(); 
         let sn: String = sn.into(); 
         let mail: String = mail.into();
+        let actual_download_id: Option<String> = None;
+        let certificate: Option<String> = None;
+        let totp_secret: Option<String> = None;
         let password: String = bcrypt::hash(password.into(),8).unwrap();
         let is_ldap: bool = is_ldap.into();
         let is_active: bool = is_active.into();
-        Self { uid, ou, dc1, dc2, cn, sn, mail, password, is_ldap, is_active }
+        Self { uid, ou, dc1, dc2, cn, sn, mail, actual_download_id, certificate, totp_secret, password, is_ldap, is_active }
     }
     pub fn new_from_register(register: RegisterLdap) -> Self {
         let uid: String = register.uid;
@@ -59,10 +64,13 @@ impl Client {
         let cn: String = register.cn; 
         let sn: String = register.sn; 
         let mail: String = register.mail;
+        let actual_download_id: Option<String> = None;
+        let certificate: Option<String> = None;
+        let totp_secret: Option<String> = None;
         let password: String = bcrypt::hash("",8).unwrap();
         let is_ldap: bool = register.is_ldap;
         let is_active: bool = true;
-        Self { uid, ou, dc1, dc2, cn, sn, mail, password, is_ldap, is_active }
+        Self { uid, ou, dc1, dc2, cn, sn, mail, actual_download_id, certificate, totp_secret, password, is_ldap, is_active }
     }
     pub fn uid(&self) -> &str {
         &self.uid

@@ -1,82 +1,84 @@
-<script>
+<script lang="ts">
   let email = $state('');
   let password = $state('');
   let loading = $state(false);
-  let error = $state('');
-
-  async function handleLogin() {
-    loading = true;
-    error = '';
-
-    // Simulação de login (substitua por sua lógica real, ex: fetch para API)
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // delay fake
-      if (email === 'teste@exemplo.com' && password === '123') {
-        alert('Login sucesso!');
-        // Redirecione com goto('/dashboard') ou similar
-      } else {
-        error = 'Credenciais inválidas';
-      }
-    } catch {
-      error = 'Erro ao conectar';
-    } finally {
-      loading = false;
-    }
-  }
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-blue-950 to-indigo-900 flex items-center justify-center p-4">
+<div class="min-h-screen bg-linear-to-b from-gray-900 via-blue-950 to-gray-900 flex items-center justify-center p-4">
   <div class="w-full max-w-md">
-    <form
-      on:submit|preventDefault={handleLogin}
-      class="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-sky-400/30 p-8 space-y-8"
-    >
-      <div class="text-center">
-        <h1 class="text-4xl font-bold text-amber-400 tracking-wide">Bem-vindo</h1>
-        <p class="mt-2 text-sky-200/80">Entre com suas credenciais</p>
+    <!-- Card principal -->
+    <div class="bg-gray-900/70 backdrop-blur-md border border-blue-900/40 rounded-xl shadow-2xl overflow-hidden">
+      <!-- Cabeçalho -->
+      <div class="bg-linear-to-r from-blue-900 to-blue-800 px-8 py-6 text-center border-b border-yellow-500/30">
+        <h1 class="text-3xl font-bold text-white tracking-wider">
+          FAB <span class="text-yellow-400">LOGIN</span>
+        </h1>
+        <p class="text-blue-300/80 mt-1 text-sm">Sistemas de Gerenciamento</p>
       </div>
 
-      <div class="space-y-6">
+      <!-- Formulário -->
+      <form method="POST" action="?/login" class="p-8 space-y-6">
         <div>
-          <label class="block text-amber-300 text-sm font-medium mb-2" for="email">Email</label>
+          <label for="email" class="block text-sm font-medium text-gray-300 mb-1">
+            E-mail institucional
+          </label>
           <input
             id="email"
+            name="email"
             type="email"
-            bind:value={email}
             required
-            class="w-full px-4 py-3 rounded-xl bg-white/5 border border-sky-500/40 text-white placeholder-sky-300/50 focus:outline-none focus:border-sky-300 focus:ring-4 focus:ring-sky-300/20 transition"
-            placeholder="seu@email.com"
+            bind:value={email}
+            class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
+                   text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
+                   focus:ring-2 focus:ring-blue-500/30 transition-all"
+            placeholder="seunome@fab.mil.br"
           />
         </div>
 
         <div>
-          <label class="block text-amber-300 text-sm font-medium mb-2" for="password">Senha</label>
+          <label for="password" class="block text-sm font-medium text-gray-300 mb-1">
+            Senha
+          </label>
           <input
             id="password"
+            name="password"
             type="password"
-            bind:value={password}
             required
-            class="w-full px-4 py-3 rounded-xl bg-white/5 border border-sky-500/40 text-white placeholder-sky-300/50 focus:outline-none focus:border-sky-300 focus:ring-4 focus:ring-sky-300/20 transition"
+            bind:value={password}
+            class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
+                   text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
+                   focus:ring-2 focus:ring-blue-500/30 transition-all"
             placeholder="••••••••"
           />
         </div>
-      </div>
 
-      {#if error}
-        <p class="text-red-300 text-center text-sm">{error}</p>
-      {/if}
+        <button
+          type="submit"
+          disabled={loading}
+          class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 
+                 text-white font-medium rounded-lg shadow-lg transform transition-all
+                 disabled:opacity-50 disabled:cursor-not-allowed
+                 border-b-4 border-blue-800 hover:border-blue-700"
+        >
+          {#if loading}
+            <span class="inline-block animate-spin mr-2">⟳</span>
+            Autenticando...
+          {:else}
+            ENTRAR
+          {/if}
+        </button>
 
-      <button
-        type="submit"
-        disabled={loading}
-        class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-500 to-sky-400 text-white font-semibold text-lg shadow-lg hover:from-sky-400 hover:to-sky-300 focus:outline-none focus:ring-4 focus:ring-sky-300/50 transition disabled:opacity-70"
-      >
-        {loading ? 'Entrando...' : 'Entrar'}
-      </button>
+        <div class="text-center text-sm text-gray-400 mt-4">
+          <a href="/recuperar-senha" class="text-blue-400 hover:text-blue-300 transition-colors">
+            Esqueceu a senha?
+          </a>
+        </div>
+      </form>
+    </div>
 
-      <p class="text-center text-sky-200/70 text-sm">
-        Não tem conta? <a href="/register" class="text-amber-300 hover:underline">Cadastre-se</a>
-      </p>
-    </form>
+    <!-- Marca d'água sutil -->
+    <div class="text-center mt-6 text-blue-800/30 text-xs tracking-widest">
+      FORÇA AÉREA BRASILEIRA
+    </div>
   </div>
 </div>

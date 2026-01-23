@@ -8,7 +8,7 @@ pub struct ClientSqlxPGRepository;
 
 impl ClientSqlxPGRepository {
     pub fn new() -> Self{
-        ClientSqlxPGRepository{}
+        ClientSqlxPGRepository
     } 
 }
 #[async_trait::async_trait]
@@ -59,6 +59,35 @@ impl Repository for ClientSqlxPGRepository {
     async fn delete_client_by_cn(&self, pool: &PgPool, client_cn: String) -> Result<(), sqlx::Error> {
         let _rows_affected = sqlx::query!(r#"DELETE FROM "clients" WHERE cn = $1"#,
             client_cn,
+        )
+        .execute(pool)
+        .await?;
+        Ok(())
+    }
+    async fn deactivate_client_by_cn(&self, pool: &PgPool, client_cn: String, is_active: bool) -> Result<(), sqlx::Error> {
+        let _rows_affected = sqlx::query!(r#"UPDATE "clients" SET is_active = $1 WHERE cn = $2"#, 
+            is_active,
+            client_cn
+        )
+        .execute(pool)
+        .await?;
+        Ok(())
+    }
+    async fn update_client_cert_by_cn(&self, pool: &PgPool, client_cn: String, client_cert: String, client_actual_download_id: String) -> Result<(), sqlx::Error> {
+        let _rows_affected = sqlx::query!(r#"UPDATE "clients" SET certificate = $1, actual_download_id = $2 WHERE cn = $3"#, 
+            client_cert,
+            client_actual_download_id,
+            client_cn
+        )
+        .execute(pool)
+        .await?;
+        Ok(())
+    }
+    async fn update_client_totp_secret_by_cn(&self, pool: &PgPool, client_cn: String, client_totp_secret: String, client_actual_download_id: String) -> Result<(), sqlx::Error> {
+        let _rows_affected = sqlx::query!(r#"UPDATE "clients" SET totp_secret = $1, actual_download_id = $2 WHERE cn = $3"#, 
+            client_totp_secret,
+            client_actual_download_id,
+            client_cn
         )
         .execute(pool)
         .await?;
