@@ -1,10 +1,4 @@
 <script>
-  let nome = $state('');
-  let sobrenome = $state('');
-  let email = $state('');
-  let uid = $state('');
-  let password = $state('');
-  let passwordConfirm = $state('');
 </script>
 
 <div class="min-h-screen bg-linear-to-b from-gray-900 via-blue-950 to-gray-900 flex items-center justify-center p-4">
@@ -20,26 +14,26 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label for="name" class="block text-sm text-gray-300 mb-1">Nome</label>
-            <input type="text" name="cn" required bind:value={nome}
+            <input type="text" name="cn" required 
                    class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg text-white" />
           </div>
           <div>
             <label for="sn" class="block text-sm text-gray-300 mb-1">Sobrenome</label>
-            <input type="text" name="sn" required bind:value={sobrenome}
+            <input type="text" name="sn" required 
                    class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg text-white" />
           </div>
         </div>
 
         <div>
           <label for="mail" class="block text-sm text-gray-300 mb-1">E-mail institucional</label>
-          <input type="email" name="mail" required bind:value={email}
+          <input type="email" name="mail" required 
                  placeholder="nome.sobrenome@fab.mil.br"
                  class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg text-white" />
         </div>
 
         <div>
           <label for="uid" class="block text-sm text-gray-300 mb-1">UID / Login</label>
-          <input type="text" name="uid" required bind:value={uid}
+          <input type="text" name="uid" required 
                  placeholder="nomeguerra"
                  class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg text-white font-mono" />
         </div>
@@ -47,12 +41,12 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label for="password" class="block text-sm text-gray-300 mb-1">Senha</label>
-            <input type="password" name="password" required minlength="8" bind:value={password}
+            <input type="password" name="password" required minlength="8" 
                    class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg text-white" />
           </div>
           <div>
             <label for="password_confirm" class="block text-sm text-gray-300 mb-1">Confirme</label>
-            <input type="password" name="password_confirm" required bind:value={passwordConfirm}
+            <input type="password" name="password_confirm" required 
                    class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg text-white" />
           </div>
         </div>

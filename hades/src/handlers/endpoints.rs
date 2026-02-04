@@ -51,16 +51,16 @@ impl MainAPI {
         }
     }
     #[oai(path = "/register", method = "post")]
-    async fn try_register(&self, request: Json<Register>) -> RegisterResponsePreview {
+    async fn try_register(&self, request: Json<Register>) -> LoginResponsePreview {
         debug!("Register: Received Register Request");
         let register = request.0;
         debug!("Register: Retrieved Deserialized Login Info");
         debug!("Register: Trying authentication");
         match services::login_service::execute_register(register, &self.pool.clone()).await{
-            Ok(()) => RegisterResponsePreview::Created,
+            Ok(()) => LoginResponsePreview::Created,
             Err(e) => match e {
-                ApiError::DatabaseError(_) => RegisterResponsePreview::InternalServerError,
-                _ => RegisterResponsePreview::NotAuthorized,
+                ApiError::DatabaseError(_) => LoginResponsePreview::InternalServerError,
+                _ => LoginResponsePreview::NotAuthorized,
             }
         }
     }
@@ -81,16 +81,8 @@ pub enum LoginResponsePreview {
     InternalServerError,
     #[oai(status = 401)]
     NotAuthorized,
-}
-
-#[derive(ApiResponse)]
-pub enum RegisterResponsePreview {
     #[oai(status = 201)]
     Created,
-    #[oai(status = 401)]
-    NotAuthorized,
-    #[oai(status = 500)]
-    InternalServerError,
 }
 
 #[derive(serde::Serialize, Object)]

@@ -20,6 +20,14 @@ pub struct Client {
     pub is_active: bool,
 }
 
+#[derive(Debug, Clone)]
+pub struct LdapInfo {
+    pub ip: String,
+    pub port: String,
+    pub base: String,
+    pub ou: String,
+}
+
 #[derive(Debug, Clone, serde::Deserialize, Object)]
 pub struct LoginLdap {
     pub email: String,
@@ -35,7 +43,6 @@ pub struct RegisterLdap {
     pub cn: String,
     pub sn: String,
     pub mail: String,
-    pub password: String,
     pub is_ldap: bool,
 }
 

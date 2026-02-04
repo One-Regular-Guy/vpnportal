@@ -1,7 +1,7 @@
 use std::env;
 
 use pasetors::{keys::{AsymmetricKeyPair, Generate}, version4::V4};
-use poem::{listener::TcpListener, Route, Server};
+use poem::{EndpointExt, Route, Server, listener::TcpListener, middleware::Cors};
 use poem_openapi::OpenApiService;
 mod models;
 mod handlers;
@@ -15,7 +15,7 @@ mod services;
 async fn main() {
     tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::new("hades=debug")) // or "debug", "trace", etc.
-        // .with_env_filter("debug")                     // global debug
+        .with_env_filter("debug")                     // global debug
         .init();
     let pool: Pool<sqlx::Postgres> = PgPoolOptions::new()
         .max_connections(5)
@@ -35,7 +35,7 @@ async fn main() {
     let endpoints: MainAPI = MainAPI::new(kp, pool, ca_chain);
     let api_service = OpenApiService::new(endpoints, "Hades", "1.0").server("http://localhost:8080");
     let ui = api_service.swagger_ui();
-    let app = Route::new().nest("/", api_service).nest("/docs", ui);
+    let app = Route::new().nest("/", api_service).nest("/docs", ui).with(Cors::new());
 
     Server::new(TcpListener::bind("127.0.0.1:8080"))
         .run(app)

@@ -1,7 +1,14 @@
 <script lang="ts">
-  let email = $state('');
-  let password = $state('');
+  import { goto } from "$app/navigation";
   let loading = $state(false);
+  let data = $props();
+  $effect(() => {
+		if (data.form.success) {
+			goto('/usuarios', {
+				replaceState: true
+			});
+		}
+	});
 </script>
 
 <div class="min-h-screen bg-linear-to-b from-gray-900 via-blue-950 to-gray-900 flex items-center justify-center p-4">
@@ -17,7 +24,7 @@
       </div>
 
       <!-- Formulário -->
-      <form method="POST" action="?/login" class="p-8 space-y-6">
+      <form method="POST" class="p-8 space-y-6">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-300 mb-1">
             E-mail institucional
@@ -27,7 +34,6 @@
             name="email"
             type="email"
             required
-            bind:value={email}
             class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
                    text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
                    focus:ring-2 focus:ring-blue-500/30 transition-all"
@@ -44,7 +50,6 @@
             name="password"
             type="password"
             required
-            bind:value={password}
             class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
                    text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
                    focus:ring-2 focus:ring-blue-500/30 transition-all"

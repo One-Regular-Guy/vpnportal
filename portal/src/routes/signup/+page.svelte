@@ -1,9 +1,16 @@
-<script>
-  let nome = $state('');
-  let email = $state('');
-  let password = $state('');
-  let passwordConfirm = $state('');
+<script lang="ts">
+	import { enhance } from "$app/forms";
+  import { goto } from '$app/navigation';
+
   let loading = $state(false);
+  let data = $props();
+  $effect(() => {
+		if (data.form.success) {
+			goto('/login', {
+				replaceState: true
+			});
+		}
+	});
 </script>
 
 <div class="min-h-screen bg-linear-to-b from-gray-900 via-blue-950 to-gray-900 flex items-center justify-center p-4">
@@ -17,7 +24,7 @@
         <p class="text-blue-300/80 mt-1 text-sm">Novo Usuário</p>
       </div>
 
-      <form method="POST" action="?/register" class="p-8 space-y-5">
+      <form method="POST" class="p-8 space-y-5" use:enhance>
         <div>
           <label for="nome" class="block text-sm font-medium text-gray-300 mb-1">
             Nome completo
@@ -27,7 +34,6 @@
             name="nome"
             type="text"
             required
-            bind:value={nome}
             class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
                    text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
                    focus:ring-2 focus:ring-blue-500/30 transition-all"
@@ -44,7 +50,6 @@
             name="email"
             type="email"
             required
-            bind:value={email}
             class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
                    text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
                    focus:ring-2 focus:ring-blue-500/30 transition-all"
@@ -63,7 +68,6 @@
               type="password"
               required
               minlength="8"
-              bind:value={password}
               class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
                      text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
                      focus:ring-2 focus:ring-blue-500/30 transition-all"
@@ -80,7 +84,6 @@
               name="passwordConfirm"
               type="password"
               required
-              bind:value={passwordConfirm}
               class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-lg 
                      text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 
                      focus:ring-2 focus:ring-blue-500/30 transition-all"

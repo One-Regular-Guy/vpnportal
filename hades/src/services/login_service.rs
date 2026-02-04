@@ -43,5 +43,5 @@ pub async fn execute_login(login: Login, kp: AsymmetricKeyPair::<V4>, pool: &PgP
 pub async fn execute_register(register: Register, pool: &PgPool) -> Result<(),ApiError>{
     let repo: UserSqlxPGRepository = user_repository::UserSqlxPGRepository::new();
     let user: User = User::new_from_register(register);
-    repo.create_user(pool, user).await.map_err(|e| ApiError::DatabaseError(e))
+    repo.create_user(pool, user).await.map_err(|e| {info!("Failed to Create User");ApiError::DatabaseError(e)})
 }
